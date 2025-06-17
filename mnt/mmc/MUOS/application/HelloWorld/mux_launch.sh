@@ -1,13 +1,16 @@
 #!/bin/sh
-# HELP: muOS Hello World with Counter
+# HELP: muOS Button Debug Tool  
 # ICON: app
-# GRID: Hello World
+# GRID: Button Debug
 
 # muOS functions
 . /opt/muos/script/var/func.sh
 
 # Set application state
 echo app >/tmp/act_go
+
+# Button Debug Tool Launcher - Module Structure Support
+# Updated for clean modular architecture
 
 # Set application directory
 APPDIR="/mnt/mmc/MUOS/application/HelloWorld"
@@ -23,6 +26,9 @@ export SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1
 
 # Set process name for muOS integration
 export PROG_NAME="HelloWorld"
+
+# IMPORTANT: Set Lua module search path for require() to work
+export LUA_PATH="$APPDIR/src/?.lua;$APPDIR/src/?/init.lua;;"
 
 # Change to application directory
 cd "$APPDIR"
