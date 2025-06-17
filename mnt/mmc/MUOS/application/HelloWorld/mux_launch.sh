@@ -9,33 +9,23 @@
 # Set application state
 echo app >/tmp/act_go
 
-# Application directory
-APPDIR="$(GET_VAR "device" "storage/rom/mount")/MUOS/application/HelloWorld"
-BINDIR="$APPDIR/bin"
-GPTOKEYB="$(GET_VAR "device" "storage/rom/mount")/MUOS/emulator/gptokeyb/gptokeyb2"
+# Set application directory
+APPDIR="/mnt/mmc/MUOS/application/HelloWorld"
 
-# Set library path
-LD_LIBRARY_PATH="$APPDIR/libs.aarch64:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH
+# Set up library path for bundled dependencies
+export LD_LIBRARY_PATH="$APPDIR/bin:$LD_LIBRARY_PATH"
 
-# OpenGL ES for ARM64
+# Configure LÖVE2D for OpenGL ES (required for ARM devices)
 export LOVE_GRAPHICS_USE_OPENGLES=1
 
-# Change to app directory
-cd "$APPDIR" || exit
+# Enable joystick background events
+export SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS=1
 
-# Set foreground process
-SET_VAR "system" "foreground_process" "love"
+# Set process name for muOS integration
+export PROG_NAME="HelloWorld"
 
-# Start gptokeyb2 for input
-$GPTOKEYB "love" -c "$APPDIR/controls.gptk" &
-GPTOKEYB_PID=$!
+# Change to application directory
+cd "$APPDIR"
 
-# Run LÖVE2D application
-"$BINDIR/love" .
-
-# Cleanup
-kill -9 $GPTOKEYB_PID 2>/dev/null
-
-# Return to muOS
-exit 0
+# Launch LÖVE2D with our source directory
+"$APPDIR/bin/love" "$APPDIR/src"
