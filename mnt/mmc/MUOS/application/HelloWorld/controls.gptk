@@ -1,0 +1,27 @@
+# gptokeyb2 configuration for Hello World
+# controls.gptk
+
+[controls]
+a = a
+b = b
+x = x
+y = y
+start = start
+select = select
+l1 = l1
+r1 = r1
+up = up
+down = down
+left = left
+right = right
+
+# Analog sticks (niet gebruikt in Hello World)
+left_analog = arrow_keys
+right_analog = mouse
+
+[config]
+deadzone_triggers = 3000
+mouse_scale = 6114
+mouse_delay = 16
+deadzone_mode = axial
+deadzone = 1000
